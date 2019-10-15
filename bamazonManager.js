@@ -78,9 +78,65 @@ function viewLowInventory() {
 }
 
 function addToInventory() {
+    inquirer
+    .prompt([
+        {
+            name: 'choice',
+            type: 'number',
+            message: 'What is the id of the product that you want to add more of?'
+        },
+        {
+            name: 'quantity',
+            type: 'number',
+            message: 'How many of those would you like to add to inventory?'
+        }
+    ])
+    .then(function(answer) {
+        connection.query(
+            `UPDATE products SET stock_quantity=stock_quantity+${answer.quantity} WHERE item_id=${answer.choice}`,
+            function(err) {
+                if (err) throw err;
+                console.log('Inventory Added!');
+                runManager();
+            }
+        )
+    })
 
 }
 
 function addNewProduct() {
-
+    inquirer
+    .prompt([
+        {
+            name: 'productName',
+            type: 'text',
+            message: 'What is the name of the product you would like to add?'
+        },
+        {
+            name: 'department',
+            type: 'text',
+            message: 'What department is this item in?'
+        },
+        {
+            name: 'price',
+            type: 'number',
+            message: 'What is the price of the item?'
+        },
+        {
+            name: 'quantity',
+            type: 'number',
+            message: "What is it's initial quantity?"
+        }
+    ])
+    .then(function(answer) {
+        connection.query(
+            `INSERT INTO products (product_name, department_name, price, stock_quantity)
+            VALUES ('${answer.productName}', '${answer.department}', ${answer.price}, ${answer.quantity})`,
+            function(err) {
+                if (err) throw err;
+                console.log('New Item Added!');
+                runManager();
+            }
+        )
+    })
 }
