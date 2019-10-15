@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const cTable = require('console.table');
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -32,8 +33,7 @@ function Item(item_id, product_name, department_name, price, stock_quantity) {
 function start() {
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
-        const transformed = results.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {})
-        console.table(transformed);
+        console.table(results);
         inquirer
             .prompt([
                 {

@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const cTable = require('console.table');
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -62,8 +63,7 @@ function runManager() {
 function viewProducts() {
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
-        const transformed = results.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {})
-        console.table(transformed);
+        console.table(results);
         runManager();
     })
 };
@@ -71,8 +71,7 @@ function viewProducts() {
 function viewLowInventory() {
     connection.query("SELECT * FROM products WHERE stock_quantity < 5", function (err, results) {
         if (err) throw err;
-        const transformed = results.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {})
-        console.table(transformed);
+        console.table(results);
         runManager();
     })
 }
