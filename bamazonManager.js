@@ -62,10 +62,8 @@ function runManager() {
 function viewProducts() {
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
-        console.log('id | product name | department name | price | quantity available');
-        for (let result of results) {
-            console.log(`${result.item_id} | ${result.product_name} | ${result.department_name} | ${result.price} | ${result.stock_quantity}`);
-        }
+        const transformed = results.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {})
+        console.table(transformed);
         runManager();
     })
 };
@@ -73,10 +71,8 @@ function viewProducts() {
 function viewLowInventory() {
     connection.query("SELECT * FROM products WHERE stock_quantity < 5", function (err, results) {
         if (err) throw err;
-        console.log('id | product name | department name | price | quantity available');
-        for (let result of results) {
-            console.log(`${result.item_id} | ${result.product_name} | ${result.department_name} | ${result.price} | ${result.stock_quantity}`);
-        }
+        const transformed = results.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {})
+        console.table(transformed);
         runManager();
     })
 }

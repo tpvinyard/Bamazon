@@ -21,13 +21,19 @@ connection.connect(function(err) {
     start();
 });
 
+function Item(item_id, product_name, department_name, price, stock_quantity) {
+    this.item_id = item_id,
+    this.product_name = product_name,
+    this.department_name = department_name,
+    this.price = price,
+    this.stock_quantity = stock_quantity
+}
+
 function start() {
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
-        console.log('id | product name | department name | price | quantity available');
-        for (let result of results) {
-            console.log(`${result.item_id} | ${result.product_name} | ${result.department_name} | ${result.price} | ${result.stock_quantity}`);
-        }
+        const transformed = results.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {})
+        console.table(transformed);
         inquirer
             .prompt([
                 {
