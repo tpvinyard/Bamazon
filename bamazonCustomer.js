@@ -42,11 +42,37 @@ function start() {
                 }
             ])
             .then(function(answer) {
-
+                checkQuantity(answer.choice, answer.quantity);
             })
     })
 }
 
-function checkQuantity(id, quantity) {
-    connection.query("SELECT stock_quantity quantity FROM products WHERE ")
+function checkQuantity(id, quantityRequest) {
+    connection.query(`SELECT stock_quantity FROM products WHERE item_id=${id}`, function(err, result) {
+        if (err) throw err;
+        if (result[0].stock_quantity > 0) {
+            console.log(result[0].stock_quantity);
+            if (result[0].stock_quantity < quantityRequest) {
+                console.log('Insufficient Quantity!')
+            } else {
+                connection.query(
+                    `UPDATE products SET stock_quantity=${result[0].stock_quantity}-${quantityRequest} WHERE item_id=${id}`,
+                    function(err) {
+                        if (err) throw err;
+                        console.log('Purchase Successful!');
+                        totalCost(id, quantityRequest);
+                    }
+                )
+            }
+        } else {
+            console.log('Insufficient Quantity!');
+        }
+    })
 }
+
+function totalCost(id, quantity) {
+    connection.query(`SELECT ${quantity}*price AS 'total_cost' FROM products WHERE item_id=${id}`, function(err, result) {
+        if (err) throw err;
+        console.log(`Total Cost of Purchase: $${result[0].total_cost}`);
+    })
+};
