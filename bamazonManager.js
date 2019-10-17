@@ -63,7 +63,9 @@ function runManager() {
 function viewProducts() {
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
+        console.log('');
         console.table(results);
+        console.log('');
         runManager();
     })
 };
@@ -71,7 +73,9 @@ function viewProducts() {
 function viewLowInventory() {
     connection.query("SELECT * FROM products WHERE stock_quantity < 5", function (err, results) {
         if (err) throw err;
+        console.log('');
         console.table(results);
+        console.log('');
         runManager();
     })
 }
@@ -95,7 +99,9 @@ function addToInventory() {
             `UPDATE products SET stock_quantity=stock_quantity+${answer.quantity} WHERE item_id=${answer.choice}`,
             function(err) {
                 if (err) throw err;
+                console.log('');
                 console.log('Inventory Added!');
+                console.log('');
                 runManager();
             }
         )
@@ -133,7 +139,9 @@ function addNewProduct() {
             VALUES ('${answer.productName}', '${answer.department}', ${answer.price}, ${answer.quantity})`,
             function(err) {
                 if (err) throw err;
+                console.log('');
                 console.log('New Item Added!');
+                console.log('');
                 runManager();
             }
         )

@@ -19,6 +19,9 @@ CREATE TABLE departments (
 
 ALTER TABLE products ADD product_sales INT;
 
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ('Toy', 5000), ('Sporting Goods', 50000), ('Cosmetics', 15000), ('Pet', 8000), ('Electronics', 30000)
+
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Furbie', 'Toy', 25, 25),
     ('Basketball', 'Sporting Goods', 15, 50),
