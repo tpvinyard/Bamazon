@@ -51,7 +51,7 @@ function runSupervisor() {
 }
 
 function viewProductSales() {
-    let queryParam = "SELECT department_id, departments.department_name, over_head_costs, SUM(IFNULL(product_sales, 0)) AS product_sales, (over_head_costs-SUM(IFNULL(product_sales,0))) as total_profit "+ 
+    let queryParam = "SELECT department_id, departments.department_name, over_head_costs, SUM(IFNULL(product_sales, 0)) AS product_sales, (SUM(IFNULL(product_sales,0))-over_head_costs) as total_profit "+ 
                         "FROM departments "+
                         "LEFT JOIN products on departments.department_name = products.department_name " +
                         "GROUP BY department_id, departments.department_name, over_head_costs;"
