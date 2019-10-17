@@ -135,8 +135,8 @@ function addNewProduct() {
     ])
     .then(function(answer) {
         connection.query(
-            `INSERT INTO products (product_name, department_name, price, stock_quantity)
-            VALUES ('${answer.productName}', '${answer.department}', ${answer.price}, ${answer.quantity})`,
+            `INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales)
+            VALUES ('${answer.productName}', '${answer.department}', ${answer.price}, ${answer.quantity}, 0)`,
             function(err) {
                 if (err) throw err;
                 console.log('');

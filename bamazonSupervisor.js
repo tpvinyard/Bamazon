@@ -53,7 +53,7 @@ function runSupervisor() {
 function viewProductSales() {
     let queryParam = "SELECT department_id, departments.department_name, over_head_costs, SUM(product_sales) AS product_sales, (over_head_costs-SUM(product_sales)) as total_profit "+ 
                         "FROM departments "+
-                        "JOIN products on departments.department_name = products.department_name " +
+                        "LEFT JOIN products on departments.department_name = products.department_name " +
                         "GROUP BY department_id, departments.department_name, over_head_costs;"
     connection.query(queryParam, function (err, results) {
         if (err) throw err;
@@ -63,3 +63,32 @@ function viewProductSales() {
         runSupervisor();
     })
 };
+
+function createNewDepartment() {
+    inquirer
+    .prompt([
+        {
+            name: 'departmentName',
+            type: 'text',
+            message: 'What is the name of the department you would like to add?'
+        },
+        {
+            name: 'overheadCosts',
+            type: 'number',
+            message: "What are the department's overhead costs?"
+        },
+    ])
+    .then(function(answer) {
+        connection.query(
+            `INSERT INTO departments (department_name, over_head_costs)
+            VALUES ('${answer.departmentName}', ${answer.overheadCosts})`,
+            function(err) {
+                if (err) throw err;
+                console.log('');
+                console.log('New Department Added!');
+                console.log('');
+                runSupervisor();
+            }
+        )
+    })
+}
