@@ -22,14 +22,6 @@ connection.connect(function(err) {
     start();
 });
 
-function Item(item_id, product_name, department_name, price, stock_quantity) {
-    this.item_id = item_id,
-    this.product_name = product_name,
-    this.department_name = department_name,
-    this.price = price,
-    this.stock_quantity = stock_quantity
-}
-
 function start() {
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
@@ -67,6 +59,7 @@ function checkQuantity(id, quantityRequest) {
                         if (err) throw err;
                         console.log('Purchase Successful!');
                         totalCost(id, quantityRequest);
+                        totalCostAddedToTable(id, quantityRequest);
                     }
                 )
             }
@@ -82,3 +75,9 @@ function totalCost(id, quantity) {
         console.log(`Total Cost of Purchase: $${result[0].total_cost}`);
     })
 };
+
+function totalCostAddedToTable(id, quantity) {
+    connection.query(`UPDATE products SET product_sales=product_sales+${quantity}*price WHERE item_id=${id}`, function(err, result) {
+        if (err) throw err;
+    })
+}

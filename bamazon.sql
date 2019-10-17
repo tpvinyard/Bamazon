@@ -11,6 +11,14 @@ CREATE TABLE products (
   stock_quantity INT NULL
 );
 
+CREATE TABLE departments (
+  department_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  department_name VARCHAR(100) NULL,
+  over_head_costs FLOAT
+);
+
+ALTER TABLE products ADD product_sales INT;
+
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ('Furbie', 'Toy', 25, 25),
     ('Basketball', 'Sporting Goods', 15, 50),
